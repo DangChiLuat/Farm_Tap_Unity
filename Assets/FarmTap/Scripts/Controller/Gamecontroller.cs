@@ -9,7 +9,7 @@ public class Gamecontroller : MonoBehaviour
     public static Gamecontroller Instance { get; private set; }
 
     [Header("Effect Settings")]
-    [SerializeField] private GameObject effectPrefab;
+    [SerializeField] private GameObject effectHit;
     private int POOL_SIZE = 5;
 
 
@@ -50,18 +50,17 @@ public class Gamecontroller : MonoBehaviour
 
     void OnEnable()
     {
-        //();
-
+        InitializeEffectPools();
     }
 
 
     private void InitializeEffectPools()
     {
-        if (effectPrefab == null) return;
+        if (effectHit == null) return;
 
         for (int i = 0; i < POOL_SIZE; i++)
         {
-            GameObject effect = Instantiate(effectPrefab, transform);
+            GameObject effect = Instantiate(effectHit, transform);
             effect.SetActive(false);
             effectPool.Add(effect);
         }
@@ -117,7 +116,9 @@ public class Gamecontroller : MonoBehaviour
         if (glow != null) ResetEffect(glow);
 
         effect.SetActive(true);
-        effect.transform.position = position.transform.position;
+
+        Vector3 pos = position.transform.position;
+        effect.transform.position = new Vector3(pos.x, pos.y, pos.z);
 
         ParticleSystem particleSystem = effect.GetComponent<ParticleSystem>();
         ParticleSystem particleGlow = glow != null ? glow.GetComponent<ParticleSystem>() : null;

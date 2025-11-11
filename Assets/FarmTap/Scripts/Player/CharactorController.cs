@@ -7,7 +7,7 @@ public class CharactorController : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform startNode;
     [SerializeField] private GameObject player;
-    [SerializeField] private GameObject posEffect;
+    [SerializeField] public GameObject posEffect;
     [SerializeField] private GameObject boom;
     [SerializeField] private ParticleSystem smokeEffect;
     [SerializeField] private ParticleSystem dustEffect;
@@ -63,7 +63,7 @@ public class CharactorController : MonoBehaviour
         _animator = player.GetComponent<Animator>();
 
         InitializeStates();
-        //SetPivotSmoke();
+        SetPivotSmoke();
     }
 
     void Update()
@@ -94,8 +94,8 @@ public class CharactorController : MonoBehaviour
         float angleParent = (transform.parent.eulerAngles.y + 360) % 360;
         float angle = (transform.eulerAngles.y + 360) % 360;
 
-        float deg = (angle + angleParent + 90) * Mathf.Deg2Rad;
-
+        float deg = (angle + angleParent - 90) * Mathf.Deg2Rad;
+        Debug.Log("Dust Effect Angle: " + deg);
         var main = dustEffect.main;
         main.startRotation3D = true;
         main.startRotationX = 0;

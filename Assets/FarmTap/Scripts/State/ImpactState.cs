@@ -9,6 +9,7 @@ public class ImpactState : ICharacterState
     {
         Debug.Log("Enter Impact State");
         impactTimer = 0f;
+        Gamecontroller.Instance.PlayEffect(controller.posEffect);
     }
 
     public void Exit(CharactorController controller)
