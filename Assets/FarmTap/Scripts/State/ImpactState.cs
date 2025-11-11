@@ -10,6 +10,9 @@ public class ImpactState : ICharacterState
         Debug.Log("Enter Impact State");
         impactTimer = 0f;
         Gamecontroller.Instance.PlayEffect(controller.posEffect);
+        controller.dustEffect.gameObject.SetActive(true);
+        controller.dustEffect.Play();
+
     }
 
     public void Exit(CharactorController controller)
@@ -40,7 +43,7 @@ public class ImpactState : ICharacterState
             // Transition back to Idle after impact duration
             if (impactTimer >= impactDuration)
             {
-                controller.ChangeState(CharacterStateType.Idle);
+           //     controller.ChangeState(CharacterStateType.Idle);
             }
             return;
         }

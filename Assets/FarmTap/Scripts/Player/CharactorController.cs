@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,9 +9,9 @@ public class CharactorController : MonoBehaviour
     [SerializeField] private Transform startNode;
     [SerializeField] private GameObject player;
     [SerializeField] public GameObject posEffect;
-    [SerializeField] private GameObject boom;
+    [SerializeField] public GameObject trails;
     [SerializeField] private ParticleSystem smokeEffect;
-    [SerializeField] private ParticleSystem dustEffect;
+    [SerializeField] public ParticleSystem dustEffect;
 
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 10f;
@@ -273,53 +274,31 @@ public class CharactorController : MonoBehaviour
         }
 
         Vector3 currentPosOther = nodeClose.transform.position;
-        if (boom != null)
-        {
-            CurrentPosBoom = boom.transform.position;
-        }
 
         // Apply impact animation using DOTween or coroutines
-        StartCoroutine(ApplyImpactAnimation(nodeClose));
+       ApplyImpactAnimation(nodeClose);
 
         NodeClosest = nodeClose;
     }
 
-    private IEnumerator ApplyImpactAnimation(GameObject nodeClose)
+    private void ApplyImpactAnimation(GameObject nodeClose)
     {
         Vector3 currentPosOther = nodeClose.transform.position;
         Vector3 offset = Vector3.zero;
-
-        if (Mathf.Approximately(transform.eulerAngles.y, 0) || Mathf.Approximately(transform.eulerAngles.y, 180))
+        if(Mathf.Approximately(transform.eulerAngles.y , 0) || Mathf.Approximately(transform.eulerAngles.y, 180))
         {
             offset = new Vector3(0, 0, 0.2f);
         }
         else
         {
-            offset = new Vector3(0.2f, 0, 0);
+            offset = new Vector3(0.2f, 0, 0);   
         }
 
-        // Simple position animation (replace with DOTween if available)
         float duration = 0.1f;
-        float elapsed = 0;
-
-        while (elapsed < duration)
-        {
-            float t = elapsed / (duration / 2);
-            nodeClose.transform.position = Vector3.Lerp(currentPosOther, currentPosOther + offset, t);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        elapsed = 0;
-        while (elapsed < duration)
-        {
-            float t = elapsed / (duration / 2);
-            nodeClose.transform.position = Vector3.Lerp(currentPosOther + offset, currentPosOther, t);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        nodeClose.transform.position = currentPosOther;
+        nodeClose.transform.DOKill();
+        Sequence seq = DOTween.Sequence();
+        seq.Append(nodeClose.transform.DOMove(currentPosOther + offset, duration).SetEase(Ease.OutQuad));
+        seq.Append(nodeClose.transform.DOMove(currentPosOther, duration).SetEase(Ease.InQuad));
     }
 
     public void OnClick()

@@ -9,7 +9,9 @@ public class IdleState : ICharacterState
         if (controller.DustEffect != null)
         {
             controller.DustEffect.Stop();
+            controller.dustEffect.gameObject.SetActive(false);
         }
+       
     }
 
     public void Exit(CharactorController controller)

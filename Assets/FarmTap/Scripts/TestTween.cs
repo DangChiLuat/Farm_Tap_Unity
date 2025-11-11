@@ -9,6 +9,6 @@ public class TestTween : MonoBehaviour
     }
     public void startTween()
     {
-        transform.DOMoveX(5, 2).SetLoops(-1, LoopType.Yoyo);
+        transform.DOMove(new Vector3(1, 2, 3), 1);
     }
 }

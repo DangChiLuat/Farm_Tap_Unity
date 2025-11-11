@@ -9,7 +9,7 @@ public class MoveState : ICharacterState
     public void Enter(CharactorController controller)
     {
         Debug.Log("Enter Move State");
-
+        controller.trails.SetActive(true);
         if (controller.DustEffect != null)
         {
             controller.DustEffect.Play();
@@ -31,6 +31,7 @@ public class MoveState : ICharacterState
     {
         Debug.Log("Exit Move State");
 
+        controller.trails.SetActive(false);
         if (controller.IsChar)
         {
             if (controller.DustEffect != null)
