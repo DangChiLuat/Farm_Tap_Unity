@@ -96,7 +96,6 @@ public class CharactorController : MonoBehaviour
         float angle = (transform.eulerAngles.y + 360) % 360;
 
         float deg = (angle + angleParent - 90) * Mathf.Deg2Rad;
-        Debug.Log("Dust Effect Angle: " + deg);
         var main = dustEffect.main;
         main.startRotation3D = true;
         main.startRotationX = 0;
@@ -194,10 +193,9 @@ public class CharactorController : MonoBehaviour
             NodeClosest = hit.collider.gameObject;
 
             CharactorController otherController = hit.collider.GetComponent<CharactorController>();
-
+            GateCheck gateCheck = hit.collider.GetComponent<GateCheck>();
             if (otherController != null)
             {
-                Debug.Log("Hit another character.");
                 if (hit.distance < closestDistance)
                 {
                     closestDistance = hit.distance;
@@ -205,9 +203,14 @@ public class CharactorController : MonoBehaviour
                     IsChar = true;
                 }
             }
+            else if (gateCheck) 
+            {
+                Debug.Log("gateCheck");
+                closestDistance = hit.distance;
+                return closestDistance;
+            }
             else
             {
-                Debug.Log("Hit an obstacle.");
                 Collider collider = GetComponent<Collider>();
                 if (collider != null) collider.enabled = false;
 
