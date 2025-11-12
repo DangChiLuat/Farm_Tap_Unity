@@ -45,9 +45,6 @@ public class Gamecontroller : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-
-
     void OnEnable()
     {
         InitializeEffectPools();

@@ -13,6 +13,8 @@ public class CharactorController : MonoBehaviour
     [SerializeField] private ParticleSystem smokeEffect;
     [SerializeField] public ParticleSystem dustEffect;
 
+    public GateCheck gate;
+
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float safeDistance = 1.0f;
@@ -203,9 +205,13 @@ public class CharactorController : MonoBehaviour
                     IsChar = true;
                 }
             }
-            else if (gateCheck) 
+            else if (gateCheck)
             {
+                SoundManager.instance.PlaySound(1);
                 Debug.Log("gateCheck");
+                IsHitGateCheck = true;
+                gameObject.GetComponent<Collider>().enabled = false;
+                gate = gateCheck;
                 closestDistance = hit.distance;
                 return closestDistance;
             }
@@ -265,21 +271,21 @@ public class CharactorController : MonoBehaviour
         // Play sound based on character type
         if (isSheep)
         {
-            // SoundManager.Instance.PlaySound("Sheepbaa");
+            SoundManager.instance.PlaySound(4);
         }
         else if (isCow)
         {
-            // SoundManager.Instance.PlaySound("Uh_1");
+            SoundManager.instance.PlaySound(5);
         }
         else if (isPig)
         {
-            // SoundManager.Instance.PlaySound("pig_va_cham");
+            SoundManager.instance.PlaySound(2);
         }
 
         Vector3 currentPosOther = nodeClose.transform.position;
 
         // Apply impact animation using DOTween or coroutines
-       ApplyImpactAnimation(nodeClose);
+        ApplyImpactAnimation(nodeClose);
 
         NodeClosest = nodeClose;
     }
@@ -288,13 +294,13 @@ public class CharactorController : MonoBehaviour
     {
         Vector3 currentPosOther = nodeClose.transform.position;
         Vector3 offset = Vector3.zero;
-        if(Mathf.Approximately(transform.eulerAngles.y , 0) || Mathf.Approximately(transform.eulerAngles.y, 180))
+        if (Mathf.Approximately(transform.eulerAngles.y, 0) || Mathf.Approximately(transform.eulerAngles.y, 180))
         {
             offset = new Vector3(0, 0, 0.2f);
         }
         else
         {
-            offset = new Vector3(0.2f, 0, 0);   
+            offset = new Vector3(0.2f, 0, 0);
         }
 
         float duration = 0.1f;
@@ -376,7 +382,7 @@ public class CharactorController : MonoBehaviour
                viewportPos.y > 1 + margin;
     }
 
-    private IEnumerator CheckAndDestroyIfOutOfViewportCoroutine(float delay)
+    public IEnumerator CheckAndDestroyIfOutOfViewportCoroutine(float delay)
     {
         yield return new WaitForSeconds(delay);
 

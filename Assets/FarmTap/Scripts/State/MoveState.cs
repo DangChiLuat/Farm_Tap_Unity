@@ -6,6 +6,7 @@ public class MoveState : ICharacterState
     private float accelerationTime = 0f;
     private float maxAccelerationTime = 0.2f;
 
+    public bool finishMove = false;
     public void Enter(CharactorController controller)
     {
         Debug.Log("Enter Move State");
@@ -17,9 +18,10 @@ public class MoveState : ICharacterState
 
         if (!controller.IsHaveBox)
         {
+            SoundManager.instance.PlaySound(1);
             if (!controller.IsHaveBox || controller.TargetDistance > 1.1f)
             {
-                // SoundManager.Instance.PlaySound("runing");
+                 SoundManager.instance.PlaySound(3);
             }
         }
 
@@ -31,7 +33,7 @@ public class MoveState : ICharacterState
     {
         Debug.Log("Exit Move State");
 
-        controller.trails.SetActive(false);
+       // controller.trails.SetActive(false);
         if (controller.IsChar)
         {
             if (controller.DustEffect != null)
@@ -44,6 +46,7 @@ public class MoveState : ICharacterState
 
     public void Update(CharactorController controller)
     {
+        if(this.finishMove) return;
         // Calculate acceleration
         accelerationTime += controller.GetDeltaTime();
         float accelerationRatio = Mathf.Min(accelerationTime / maxAccelerationTime, 1.0f);
@@ -59,13 +62,21 @@ public class MoveState : ICharacterState
         controller.transform.position = controller.transform.position + moveVec;
         controller.DistanceMoved += moveAmount;
 
+
         if (controller.DistanceMoved >= controller.TargetDistance)
         {
-            controller.ChangeState(CharacterStateType.Impact);
+            if (controller.IsHitGateCheck)
+            {  
+                //controller.ChangeState(CharacterStateType.Idle);
+                controller.gate.moveCharToTarget(controller.transform);
+               // controller.ChangeState(CharacterStateType.Run);
+                this.finishMove = true;
+            }
 
-            if (controller.NodeClosest != null)
+            else if (controller.NodeClosest != null)
             {
                 controller.GetClosestNode(controller.NodeClosest);
+                controller.ChangeState(CharacterStateType.Impact);
             }
         }
     }

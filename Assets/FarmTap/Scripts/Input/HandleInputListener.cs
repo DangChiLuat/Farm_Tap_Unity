@@ -167,6 +167,7 @@ public class HandleInputListener : MonoBehaviour
                 touchDuration < _touchThreshold &&
                 !_isTouchMoved)
             {
+                SoundManager.instance.PlaySound(0);
                 item.OnClick();
             }
         }

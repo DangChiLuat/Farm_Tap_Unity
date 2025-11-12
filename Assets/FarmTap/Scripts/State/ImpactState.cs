@@ -12,6 +12,7 @@ public class ImpactState : ICharacterState
         Gamecontroller.Instance.PlayEffect(controller.posEffect);
         controller.dustEffect.gameObject.SetActive(true);
         controller.dustEffect.Play();
+       // SoundManager.instance.PlaySound(2);
 
     }
 
