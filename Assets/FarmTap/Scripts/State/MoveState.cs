@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class MoveState : ICharacterState
@@ -10,11 +11,12 @@ public class MoveState : ICharacterState
     public void Enter(CharactorController controller)
     {
         Debug.Log("Enter Move State");
-        controller.trails.SetActive(true);
-        if (controller.DustEffect != null)
-        {
-            controller.DustEffect.Play();
-        }
+        controller.trails.gameObject.SetActive(true);
+        controller.trails.Play();
+        //if (controller.DustEffect != null)
+        //{
+        //    controller.DustEffect.Play();
+        //}
 
         if (!controller.IsHaveBox)
         {
@@ -32,8 +34,9 @@ public class MoveState : ICharacterState
     public void Exit(CharactorController controller)
     {
         Debug.Log("Exit Move State");
-
-       // controller.trails.SetActive(false);
+        controller.trails.gameObject.SetActive(false);
+        controller.trails.Stop();
+        // controller.trails.SetActive(false);
         if (controller.IsChar)
         {
             if (controller.DustEffect != null)

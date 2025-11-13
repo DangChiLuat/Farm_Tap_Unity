@@ -12,12 +12,6 @@ public class Gamecontroller : MonoBehaviour
     [SerializeField] private GameObject effectHit;
     private int POOL_SIZE = 5;
 
-
-    [Header("Settings")]
-    [SerializeField] private bool isVideo = false;
-    [SerializeField] private bool isCam = true;
-    [SerializeField] private bool isCanInteract = true;
-
     [Header("Character Lists")]
     [SerializeField] private List<GameObject> listCharacter = new List<GameObject>();
 

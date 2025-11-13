@@ -9,8 +9,7 @@ public class CharactorController : MonoBehaviour
     [SerializeField] private Transform startNode;
     [SerializeField] private GameObject player;
     [SerializeField] public GameObject posEffect;
-    [SerializeField] public GameObject trails;
-    [SerializeField] private ParticleSystem smokeEffect;
+    [SerializeField] public ParticleSystem trails;
     [SerializeField] public ParticleSystem dustEffect;
 
     public GateCheck gate;
